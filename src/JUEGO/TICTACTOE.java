@@ -18,6 +18,18 @@ public class TICTACTOE extends javax.swing.JFrame {
             }
         }
         cont=0;
+        this.btn_uno.setEnabled(false);
+        this.btn_dos.setEnabled(false);
+        this.btn_tres.setEnabled(false);
+        this.btn_cuatro.setEnabled(false);
+        this.btn_cinco.setEnabled(false);
+        this.btn_seis.setEnabled(false);
+        this.btn_siete.setEnabled(false);
+        this.btn_ocho.setEnabled(false);
+        this.btn_nueve.setEnabled(false);
+        
+        this.btn_circulo.setEnabled(true);
+        this.btn_equis.setEnabled(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +45,9 @@ public class TICTACTOE extends javax.swing.JFrame {
         btn_siete = new javax.swing.JButton();
         btn_ocho = new javax.swing.JButton();
         btn_nueve = new javax.swing.JButton();
-        btn_reset = new javax.swing.JButton();
+        btn_reset1 = new javax.swing.JButton();
+        btn_equis = new javax.swing.JButton();
+        btn_circulo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("panel");
@@ -92,11 +106,27 @@ public class TICTACTOE extends javax.swing.JFrame {
             }
         });
 
-        btn_reset.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        btn_reset.setText("RESET");
-        btn_reset.addActionListener(new java.awt.event.ActionListener() {
+        btn_reset1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        btn_reset1.setText("RESET");
+        btn_reset1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_resetActionPerformed(evt);
+                btn_reset1ActionPerformed(evt);
+            }
+        });
+
+        btn_equis.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btn_equis.setText("X");
+        btn_equis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_equisActionPerformed(evt);
+            }
+        });
+
+        btn_circulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btn_circulo.setText("O");
+        btn_circulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_circuloActionPerformed(evt);
             }
         });
 
@@ -113,7 +143,6 @@ public class TICTACTOE extends javax.swing.JFrame {
                         .addComponent(btn_dos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addComponent(btn_tres, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btn_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_cuatro, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -126,7 +155,16 @@ public class TICTACTOE extends javax.swing.JFrame {
                         .addComponent(btn_ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_nueve, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_equis, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(btn_circulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn_reset1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,8 +185,12 @@ public class TICTACTOE extends javax.swing.JFrame {
                     .addComponent(btn_ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_siete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addComponent(btn_reset, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btn_reset1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_circulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_equis, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -156,6 +198,7 @@ public class TICTACTOE extends javax.swing.JFrame {
 
     public void ganador(){
         if(cont>=3){
+            System.out.println("\n");
             // figura matriz
             for (int k = 0; k < 3; k++) {
                 for (int h = 0; h < 3; h++) {
@@ -385,36 +428,71 @@ public class TICTACTOE extends javax.swing.JFrame {
                 matriz[i][j] = 2;
             }
         }
-        this.btn_uno.setEnabled(true);
+        this.btn_uno.setEnabled(false);
         this.btn_uno.setIcon(null);
         
-        this.btn_dos.setEnabled(true);
+        this.btn_dos.setEnabled(false);
         this.btn_dos.setIcon(null);
         
-        this.btn_tres.setEnabled(true);
+        this.btn_tres.setEnabled(false);
         this.btn_tres.setIcon(null);
         
-        this.btn_cuatro.setEnabled(true);
+        this.btn_cuatro.setEnabled(false);
         this.btn_cuatro.setIcon(null);
 
-        this.btn_cinco.setEnabled(true);
+        this.btn_cinco.setEnabled(false);
         this.btn_cinco.setIcon(null);
         
-        this.btn_seis.setEnabled(true);
+        this.btn_seis.setEnabled(false);
         this.btn_seis.setIcon(null);
 
-        this.btn_siete.setEnabled(true);
+        this.btn_siete.setEnabled(false);
         this.btn_siete.setIcon(null);
         
-        this.btn_ocho.setEnabled(true);
+        this.btn_ocho.setEnabled(false);
         this.btn_ocho.setIcon(null);
         
-        this.btn_nueve.setEnabled(true);
+        this.btn_nueve.setEnabled(false);
         this.btn_nueve.setIcon(null);
+        
+        this.btn_equis.setEnabled(true);
+        this.btn_circulo.setEnabled(true);
     }
-    private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
+    private void btn_reset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reset1ActionPerformed
         this.resetea();
-    }//GEN-LAST:event_btn_resetActionPerformed
+    }//GEN-LAST:event_btn_reset1ActionPerformed
+
+    private void btn_equisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_equisActionPerformed
+        turno="equis";
+        this.btn_equis.setEnabled(false);
+        this.btn_circulo.setEnabled(false);
+        
+        this.btn_uno.setEnabled(true);
+        this.btn_dos.setEnabled(true);
+        this.btn_tres.setEnabled(true);
+        this.btn_cuatro.setEnabled(true);
+        this.btn_cinco.setEnabled(true);
+        this.btn_seis.setEnabled(true);
+        this.btn_siete.setEnabled(true);
+        this.btn_ocho.setEnabled(true);
+        this.btn_nueve.setEnabled(true);
+    }//GEN-LAST:event_btn_equisActionPerformed
+
+    private void btn_circuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_circuloActionPerformed
+        turno="circulo";
+        this.btn_circulo.setEnabled(false);
+        this.btn_equis.setEnabled(false);
+        
+        this.btn_uno.setEnabled(true);
+        this.btn_dos.setEnabled(true);
+        this.btn_tres.setEnabled(true);
+        this.btn_cuatro.setEnabled(true);
+        this.btn_cinco.setEnabled(true);
+        this.btn_seis.setEnabled(true);
+        this.btn_siete.setEnabled(true);
+        this.btn_ocho.setEnabled(true);
+        this.btn_nueve.setEnabled(true);
+    }//GEN-LAST:event_btn_circuloActionPerformed
 
     /**
      * @param args the command line arguments
@@ -453,11 +531,13 @@ public class TICTACTOE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cinco;
+    private javax.swing.JButton btn_circulo;
     private javax.swing.JButton btn_cuatro;
     private javax.swing.JButton btn_dos;
+    private javax.swing.JButton btn_equis;
     private javax.swing.JButton btn_nueve;
     private javax.swing.JButton btn_ocho;
-    private javax.swing.JButton btn_reset;
+    private javax.swing.JButton btn_reset1;
     private javax.swing.JButton btn_seis;
     private javax.swing.JButton btn_siete;
     private javax.swing.JButton btn_tres;
