@@ -25,7 +25,7 @@ Este proyecto implementa el juego con una interfaz gráfica donde los jugadores 
 
 1. **Clonar el repositorio**:
    ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+   git clone https://github.com/AcuLuis/TicTacToe.git
 
 2. **Abrir el proyecto en tu IDE**:
 Importa el proyecto en tu IDE favorito.
