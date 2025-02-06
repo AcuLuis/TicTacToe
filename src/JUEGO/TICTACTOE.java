@@ -2,6 +2,7 @@
 package JUEGO;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class TICTACTOE extends javax.swing.JFrame {
     
@@ -153,6 +154,77 @@ public class TICTACTOE extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void ganador(){
+        if(cont>=3){
+            // figura matriz
+            for (int k = 0; k < 3; k++) {
+                for (int h = 0; h < 3; h++) {
+                    System.out.print(matriz[k][h]);
+                }
+                System.out.println("");
+            }
+            boolean gano=false;
+            String g = "";
+            // filas
+            for(int k=0; k<3; k++){
+                String fila="";
+                for(int h=0; h<3; h++){
+                    fila= fila+Integer.toString(matriz[k][h]);
+                }
+                if(fila.equals("000") || fila.equals("111")){
+                    gano=true;
+                    g = "fila";
+                }
+            }
+            // columnas
+            for(int k=0; k<3; k++){
+                String columna="";
+                for(int h=0; h<3; h++){
+                    columna= columna+Integer.toString(matriz[h][k]);
+                }
+                if(columna.equals("000") || columna.equals("111")){
+                    gano=true;
+                    g = "columna";
+                }
+            }
+            // diagonal principal
+            String diagonal_p="";
+            for(int k=0; k<3; k++){
+                for(int h=0; h<3; h++){
+                    if(k==h){
+                        diagonal_p=diagonal_p+Integer.toString(matriz[k][h]);
+                    }
+                }
+            }
+            if(diagonal_p.equals("000") || diagonal_p.equals("111")){
+                gano=true;
+                g="diagonal principal";
+            }
+            // diagonal secundaria
+            String diagonal_s="";
+            for(int k=0; k<3; k++){
+                for(int h=0; h<3; h++){
+                    if(k+h==2){
+                        diagonal_s=diagonal_s+Integer.toString(matriz[k][h]);
+                    }
+                }
+            }
+            if(diagonal_s.equals("000") || diagonal_s.equals("111")){
+                gano=true;
+                g="diagonal secundaria";
+            }
+            if(gano){
+                if(turno.equals("circulo")){
+                    JOptionPane.showMessageDialog(null, "GANO EQUIS");
+                }else{
+                    JOptionPane.showMessageDialog(null, "GANO CIRCULO");
+                }
+                System.out.println("gano por "+g);
+                this.resetea();
+            }
+        }
+    }
+    
     private void btn_cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cuatroActionPerformed
         if(turno.equals("") || !turno.equals("circulo")){
             ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
@@ -166,6 +238,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[1][0]=0;
         }
         this.btn_cuatro.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_cuatroActionPerformed
 
@@ -182,6 +255,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[0][0]=0;
         }
         this.btn_uno.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_unoActionPerformed
 
@@ -198,6 +272,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[2][0]=0;
         }
         this.btn_siete.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_sieteActionPerformed
 
@@ -214,6 +289,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[0][1]=0;
         }
         this.btn_dos.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_dosActionPerformed
 
@@ -230,6 +306,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[0][2]=0;
         }
         this.btn_tres.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_tresActionPerformed
 
@@ -246,6 +323,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[1][1]=0;
         }
         this.btn_cinco.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_cincoActionPerformed
 
@@ -262,6 +340,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[1][2]=0;
         }
         this.btn_seis.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_seisActionPerformed
 
@@ -278,6 +357,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[2][1]=0;
         }
         this.btn_ocho.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_ochoActionPerformed
 
@@ -294,6 +374,7 @@ public class TICTACTOE extends javax.swing.JFrame {
             matriz[2][2]=0;
         }
         this.btn_nueve.setEnabled(false);
+        this.ganador();
         cont++;
     }//GEN-LAST:event_btn_nueveActionPerformed
     public void resetea(){
