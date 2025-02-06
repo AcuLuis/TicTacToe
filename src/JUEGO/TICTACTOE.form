@@ -89,8 +89,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_dos">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_dosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_tres">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_tresActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_cuatro">
       <Events>
@@ -98,8 +104,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_cinco">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cincoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_seis">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_seisActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_siete">
       <Events>
@@ -107,8 +119,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_ocho">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_ochoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_nueve">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_nueveActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btn_reset">
       <Properties>
@@ -117,6 +135,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="RESET"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_resetActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
