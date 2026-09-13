@@ -1,50 +1,47 @@
 # Tic Tac Toe en Java
 
-Este es un proyecto simple de Tic Tac Toe (Tres en raya) implementado en Java utilizando la biblioteca Swing para la interfaz gráfica.
+Este proyecto implementa una version del clasico juego de Tres en Raya (Tic Tac Toe) mediante el lenguaje Java, utilizando la biblioteca javax.swing para el renderizado de la interfaz grafica. Se ha diseñado siguiendo un modelo de separacion de responsabilidades, dividiendo la logica de negocio de los componentes visuales.
 
-## Descripción
+## Caracteristicas del Sistema
 
-El juego de Tic Tac Toe es un clásico juego de dos jugadores que se turnan para marcar espacios en un tablero de 3x3. El objetivo es ser el primero en conseguir tres de tus marcas en una fila, columna o diagonal.
+- **Arquitectura Desacoplada**: La gestion del estado del juego y el renderizado UI estan divididos en clases independientes (`JuegoLogica` y `TICTACTOE`).
+- **Sistema de Torneo (Mejor de N)**: Soporte para configurar una serie de partidas (1, 3, 5, 7 rondas). El estado se mantiene a lo largo de las rondas hasta declarar un campeon definitivo.
+- **Registro de Jugadores**: Permite la entrada de identificadores (nombres) para los dos participantes.
+- **Modos de Asignacion de Fichas**:
+  - *Asignacion Fija*: El Jugador 1 es asignado permanentemente a la ficha 'X' y el Jugador 2 a la ficha 'O'.
+  - *Eleccion Libre (Rotativa)*: Se solicita al inicio de cada ronda que los participantes decidan el mapeo de sus identidades respecto a las fichas 'X' y 'O'.
+- **Graficos Vectoriales**: Las fichas son renderizadas utilizando fuentes nativas del sistema, garantizando alta resolucion y ausencia de pixelacion sin dependencia de recursos de mapa de bits (imagenes externas).
+- **Interfaz Reactiva**: Actualizacion de componentes Swing en tiempo real para indicar el turno activo y el marcador del torneo.
 
-Este proyecto implementa el juego con una interfaz gráfica donde los jugadores pueden hacer clic en los botones para colocar sus marcas (equis o círculo). El juego detecta automáticamente cuando un jugador gana y permite reiniciar el juego para una nueva partida.
-
-## Características
-
-- Interfaz gráfica utilizando Swing.
-- Detección automática del ganador.
-- Reinicio del juego con un botón.
-- Alternancia de turnos entre jugadores.
-- Representación visual de las marcas (equis y círculo) en el tablero.
-
-## Requisitos
+## Requisitos del Entorno
 
 - Java Development Kit (JDK) 8 o superior.
-- Un entorno de desarrollo integrado (IDE) como IntelliJ IDEA, Eclipse, o cualquier editor de texto con soporte para Java.
+- Entorno de construccion (IDE como IntelliJ IDEA, Eclipse, NetBeans) o compilacion manual mediante `javac`.
 
-## Instrucciones de uso
+## Instrucciones de Construccion y Ejecucion
 
 1. **Clonar el repositorio**:
    ```bash
    git clone https://github.com/AcuLuis/TicTacToe.git
+   ```
 
-2. **Abrir el proyecto en tu IDE**:
-Importa el proyecto en tu IDE favorito.
-Asegúrate de que todas las dependencias estén correctamente configuradas.
+2. **Compilacion (Linea de Comandos)**:
+   Ubicarse en la raiz del proyecto y compilar los archivos fuente especificando el directorio de salida:
+   ```bash
+   javac -d build/classes src/JUEGO/*.java
+   ```
 
-3. **Ejecutar el programa**:
-Busca la clase TICTACTOE en el proyecto.
-Ejecuta la clase TICTACTOE para iniciar el juego.
+3. **Ejecucion**:
+   Ejecutar la clase principal desde el directorio compilado:
+   ```bash
+   java -cp build/classes JUEGO.TICTACTOE
+   ```
 
-4. **Jugar**:
-Al iniciar el juego, selecciona si deseas ser el jugador "Equis" o "Círculo".
-Haz clic en los botones del tablero para colocar tu marca.
-El juego alternará automáticamente entre los jugadores y detectará cuando haya un ganador.
-Usa el botón de reinicio para comenzar una nueva partida.
+## Estructura del Proyecto
 
-## Estructura del proyecto
-- **TICTACTOE.java**: Clase principal que contiene la lógica del juego y la interfaz gráfica.
-
-- **IMAGES/**: Directorio que contiene las imágenes de las marcas (equis y círculo).
+- `src/JUEGO/TICTACTOE.java`: Clase principal y Controlador de Vistas. Gestiona los eventos de usuario, renderiza el JFrame y despliega dialogos de configuracion (JOptionPane).
+- `src/JUEGO/JuegoLogica.java`: Modelo de datos. Contiene la logica de evaluacion de la matriz (3x3), el control de los turnos, validacion de victorias parciales y estado global del torneo.
 
 ## Licencia
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+Este proyecto esta sujeto a la licencia MIT. Consulte el archivo `LICENSE` proporcionado en el repositorio para obtener los detalles correspondientes.
