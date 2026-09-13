@@ -1,35 +1,86 @@
 
 package JUEGO;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class TICTACTOE extends javax.swing.JFrame {
     
-    String turno="";
-    int[][] matriz = new int[3][3];
-    int cont;
+    JuegoLogica logica;
+    javax.swing.JButton[][] botonesMatriz;
+
     public TICTACTOE() {
         initComponents();
-        turno="";
+        logica = new JuegoLogica();
+        
+        botonesMatriz = new javax.swing.JButton[][]{
+            {btn_uno, btn_dos, btn_tres},
+            {btn_cuatro, btn_cinco, btn_seis},
+            {btn_siete, btn_ocho, btn_nueve}
+        };
+        
+        aplicarEstilos();
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                matriz[i][j] = 2;
+                botonesMatriz[i][j].setEnabled(false);
             }
         }
-        cont=0;
-        this.btn_uno.setEnabled(false);
-        this.btn_dos.setEnabled(false);
-        this.btn_tres.setEnabled(false);
-        this.btn_cuatro.setEnabled(false);
-        this.btn_cinco.setEnabled(false);
-        this.btn_seis.setEnabled(false);
-        this.btn_siete.setEnabled(false);
-        this.btn_ocho.setEnabled(false);
-        this.btn_nueve.setEnabled(false);
         
         this.btn_circulo.setEnabled(true);
         this.btn_equis.setEnabled(true);
+        actualizarTitulo();
+    }
+    
+    private void aplicarEstilos() {
+        // Centrar y color de fondo
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new Color(45, 45, 45));
+        
+        java.awt.Font fuenteGrande = new java.awt.Font("Arial", java.awt.Font.BOLD, 80);
+        // Estilos para el tablero
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                botonesMatriz[i][j].setBackground(new Color(240, 240, 240));
+                botonesMatriz[i][j].setFocusPainted(false);
+                botonesMatriz[i][j].setBorderPainted(false);
+                botonesMatriz[i][j].setFont(fuenteGrande);
+                botonesMatriz[i][j].setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        }
+        
+        // Estilos para botones de control
+        btn_reset1.setBackground(new Color(220, 53, 69));
+        btn_reset1.setForeground(Color.WHITE);
+        btn_reset1.setFocusPainted(false);
+        btn_reset1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        btn_equis.setBackground(new Color(0, 123, 255));
+        btn_equis.setForeground(Color.WHITE);
+        btn_equis.setFocusPainted(false);
+        btn_equis.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        btn_circulo.setBackground(new Color(40, 167, 69));
+        btn_circulo.setForeground(Color.WHITE);
+        btn_circulo.setFocusPainted(false);
+        btn_circulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+    
+    private void actualizarTitulo() {
+        String marcador = String.format(" | %s: %d - %s: %d | Ronda %d de %d", 
+            logica.getNombreJ1(), logica.getVictoriasJ1(), 
+            logica.getNombreJ2(), logica.getVictoriasJ2(), 
+            Math.min(logica.getRondasJugadas() + 1, logica.getTotalRondas()), logica.getTotalRondas());
+            
+        if (!btn_uno.isEnabled() && btn_equis.isEnabled()) {
+            this.setTitle("Tic Tac Toe - Esperando inicio" + marcador);
+        } else {
+            String nombreJugador = logica.getNombre(logica.getTurno());
+            String simbolo = (logica.getTurno() == JuegoLogica.EQUIS) ? "X" : "O";
+            this.setTitle("Tic Tac Toe - Turno de: " + nombreJugador + " (" + simbolo + ")" + marcador);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -196,303 +247,191 @@ public class TICTACTOE extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void ganador(){
-        if(cont>=3){
-            System.out.println("\n");
-            // figura matriz
-            for (int k = 0; k < 3; k++) {
-                for (int h = 0; h < 3; h++) {
-                    System.out.print(matriz[k][h]);
-                }
-                System.out.println("");
+    private void procesarClick(int fila, int col, javax.swing.JButton boton) {
+        int turnoActual = logica.getTurno();
+        if (logica.hacerMovimiento(fila, col)) {
+            if (turnoActual == JuegoLogica.EQUIS) {
+                boton.setText("X");
+                boton.setForeground(new Color(0, 123, 255)); // Azul
+            } else {
+                boton.setText("O");
+                boton.setForeground(new Color(40, 167, 69)); // Verde
             }
-            boolean gano=false;
-            String g = "";
-            // filas
-            for(int k=0; k<3; k++){
-                String fila="";
-                for(int h=0; h<3; h++){
-                    fila= fila+Integer.toString(matriz[k][h]);
-                }
-                if(fila.equals("000") || fila.equals("111")){
-                    gano=true;
-                    g = "fila";
-                }
-            }
-            // columnas
-            for(int k=0; k<3; k++){
-                String columna="";
-                for(int h=0; h<3; h++){
-                    columna= columna+Integer.toString(matriz[h][k]);
-                }
-                if(columna.equals("000") || columna.equals("111")){
-                    gano=true;
-                    g = "columna";
-                }
-            }
-            // diagonal principal
-            String diagonal_p="";
-            for(int k=0; k<3; k++){
-                for(int h=0; h<3; h++){
-                    if(k==h){
-                        diagonal_p=diagonal_p+Integer.toString(matriz[k][h]);
-                    }
-                }
-            }
-            if(diagonal_p.equals("000") || diagonal_p.equals("111")){
-                gano=true;
-                g="diagonal principal";
-            }
-            // diagonal secundaria
-            String diagonal_s="";
-            for(int k=0; k<3; k++){
-                for(int h=0; h<3; h++){
-                    if(k+h==2){
-                        diagonal_s=diagonal_s+Integer.toString(matriz[k][h]);
-                    }
-                }
-            }
-            if(diagonal_s.equals("000") || diagonal_s.equals("111")){
-                gano=true;
-                g="diagonal secundaria";
-            }
-            if(gano){
-                if(turno.equals("circulo")){
-                    JOptionPane.showMessageDialog(null, "GANO EQUIS");
-                }else{
-                    JOptionPane.showMessageDialog(null, "GANO CIRCULO");
-                }
-                System.out.println("gano por "+g);
+            boton.setEnabled(false);
+            actualizarTitulo();
+            verificarGanador();
+        }
+    }
+
+    public void verificarGanador() {
+        int estado = logica.verificarEstado();
+        boolean rondaTerminada = false;
+        
+        if (estado == JuegoLogica.ESTADO_GANA_EQUIS) {
+            String nombre = logica.getNombre(JuegoLogica.EQUIS);
+            JOptionPane.showMessageDialog(this, "¡GANÓ " + nombre + " LA RONDA " + (logica.getRondasJugadas() + 1) + "!");
+            logica.registrarVictoria(JuegoLogica.EQUIS);
+            rondaTerminada = true;
+        } else if (estado == JuegoLogica.ESTADO_GANA_CIRCULO) {
+            String nombre = logica.getNombre(JuegoLogica.CIRCULO);
+            JOptionPane.showMessageDialog(this, "¡GANÓ " + nombre + " LA RONDA " + (logica.getRondasJugadas() + 1) + "!");
+            logica.registrarVictoria(JuegoLogica.CIRCULO);
+            rondaTerminada = true;
+        } else if (estado == JuegoLogica.ESTADO_EMPATE) {
+            JOptionPane.showMessageDialog(this, "EMPATE EN LA RONDA " + (logica.getRondasJugadas() + 1));
+            logica.registrarEmpate();
+            rondaTerminada = true;
+        }
+
+        if (rondaTerminada) {
+            if (logica.torneoFinalizado()) {
+                anunciarCampeon();
+            } else {
                 this.resetea();
             }
         }
     }
+
+    private void anunciarCampeon() {
+        int campeon = logica.getCampeon();
+        String mensaje = "El torneo ha terminado en empate.";
+        if (campeon == 1) mensaje = "¡" + logica.getNombreJ1().toUpperCase() + " ES EL CAMPEÓN DEL TORNEO!";
+        if (campeon == 2) mensaje = "¡" + logica.getNombreJ2().toUpperCase() + " ES EL CAMPEÓN DEL TORNEO!";
+        
+        JOptionPane.showMessageDialog(this, mensaje, "Fin del Torneo", JOptionPane.INFORMATION_MESSAGE);
+        
+        logica.iniciarTorneo(1, "Jugador 1", "Jugador 2", true);
+        this.resetea();
+    }
     
     private void btn_cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cuatroActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_cuatro.setIcon(icono);
-            turno="circulo";
-            matriz[1][0]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_cuatro.setIcon(icono);
-            turno="equis";
-            matriz[1][0]=0;
-        }
-        this.btn_cuatro.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(1, 0, btn_cuatro);
     }//GEN-LAST:event_btn_cuatroActionPerformed
 
     private void btn_unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_unoActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_uno.setIcon(icono);
-            turno="circulo";
-            matriz[0][0]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_uno.setIcon(icono);
-            turno="equis";
-            matriz[0][0]=0;
-        }
-        this.btn_uno.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(0, 0, btn_uno);
     }//GEN-LAST:event_btn_unoActionPerformed
 
     private void btn_sieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sieteActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_siete.setIcon(icono);
-            turno="circulo";
-            matriz[2][0]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_siete.setIcon(icono);
-            turno="equis";
-            matriz[2][0]=0;
-        }
-        this.btn_siete.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(2, 0, btn_siete);
     }//GEN-LAST:event_btn_sieteActionPerformed
 
     private void btn_dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dosActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_dos.setIcon(icono);
-            turno="circulo";
-            matriz[0][1]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_dos.setIcon(icono);
-            turno="equis";
-            matriz[0][1]=0;
-        }
-        this.btn_dos.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(0, 1, btn_dos);
     }//GEN-LAST:event_btn_dosActionPerformed
 
     private void btn_tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tresActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_tres.setIcon(icono);
-            turno="circulo";
-            matriz[0][2]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_tres.setIcon(icono);
-            turno="equis";
-            matriz[0][2]=0;
-        }
-        this.btn_tres.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(0, 2, btn_tres);
     }//GEN-LAST:event_btn_tresActionPerformed
 
     private void btn_cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cincoActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_cinco.setIcon(icono);
-            turno="circulo";
-            matriz[1][1]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_cinco.setIcon(icono);
-            turno="equis";
-            matriz[1][1]=0;
-        }
-        this.btn_cinco.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(1, 1, btn_cinco);
     }//GEN-LAST:event_btn_cincoActionPerformed
 
     private void btn_seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seisActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_seis.setIcon(icono);
-            turno="circulo";
-            matriz[1][2]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_seis.setIcon(icono);
-            turno="equis";
-            matriz[1][2]=0;
-        }
-        this.btn_seis.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(1, 2, btn_seis);
     }//GEN-LAST:event_btn_seisActionPerformed
 
     private void btn_ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ochoActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_ocho.setIcon(icono);
-            turno="circulo";
-            matriz[2][1]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_ocho.setIcon(icono);
-            turno="equis";
-            matriz[2][1]=0;
-        }
-        this.btn_ocho.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(2, 1, btn_ocho);
     }//GEN-LAST:event_btn_ochoActionPerformed
 
     private void btn_nueveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nueveActionPerformed
-        if(turno.equals("") || !turno.equals("circulo")){
-            ImageIcon icono = new ImageIcon("src/IMAGES//equis.png");
-            this.btn_nueve.setIcon(icono);
-            turno="circulo";
-            matriz[2][2]=1;
-        }else{
-            ImageIcon icono = new ImageIcon("src/IMAGES//circulo.png");
-            this.btn_nueve.setIcon(icono);
-            turno="equis";
-            matriz[2][2]=0;
-        }
-        this.btn_nueve.setEnabled(false);
-        this.ganador();
-        cont++;
+        procesarClick(2, 2, btn_nueve);
     }//GEN-LAST:event_btn_nueveActionPerformed
     public void resetea(){
-        turno="";
-        cont=0;
+        logica.iniciarJuego();
+        
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                matriz[i][j] = 2;
+                botonesMatriz[i][j].setEnabled(false);
+                botonesMatriz[i][j].setIcon(null);
+                botonesMatriz[i][j].setText("");
             }
         }
-        this.btn_uno.setEnabled(false);
-        this.btn_uno.setIcon(null);
-        
-        this.btn_dos.setEnabled(false);
-        this.btn_dos.setIcon(null);
-        
-        this.btn_tres.setEnabled(false);
-        this.btn_tres.setIcon(null);
-        
-        this.btn_cuatro.setEnabled(false);
-        this.btn_cuatro.setIcon(null);
-
-        this.btn_cinco.setEnabled(false);
-        this.btn_cinco.setIcon(null);
-        
-        this.btn_seis.setEnabled(false);
-        this.btn_seis.setIcon(null);
-
-        this.btn_siete.setEnabled(false);
-        this.btn_siete.setIcon(null);
-        
-        this.btn_ocho.setEnabled(false);
-        this.btn_ocho.setIcon(null);
-        
-        this.btn_nueve.setEnabled(false);
-        this.btn_nueve.setIcon(null);
         
         this.btn_equis.setEnabled(true);
         this.btn_circulo.setEnabled(true);
+        actualizarTitulo();
     }
+    private void comprobarInicioTorneo() {
+        if (logica.getRondasJugadas() == 0 && logica.getTotalRondas() == 1 && logica.getVictoriasJ1() == 0 && logica.getVictoriasJ2() == 0) {
+            javax.swing.JTextField j1Field = new javax.swing.JTextField("Jugador 1");
+            javax.swing.JTextField j2Field = new javax.swing.JTextField("Jugador 2");
+            String[] modos = {"Asignación Fija (J1=X, J2=O)", "Elección libre por ronda"};
+            javax.swing.JComboBox<String> modoBox = new javax.swing.JComboBox<>(modos);
+            String[] rondas = {"1", "3", "5", "7"};
+            javax.swing.JComboBox<String> rondaBox = new javax.swing.JComboBox<>(rondas);
+
+            Object[] message = {
+                "Nombre Jugador 1:", j1Field,
+                "Nombre Jugador 2:", j2Field,
+                "Modo de Asignación:", modoBox,
+                "Rondas (Al mejor de):", rondaBox
+            };
+
+            int option = JOptionPane.showConfirmDialog(this, message, "Configuración del Torneo", JOptionPane.OK_CANCEL_OPTION);
+            
+            if (option == JOptionPane.OK_OPTION) {
+                boolean fijo = modoBox.getSelectedIndex() == 0;
+                int r = Integer.parseInt((String) rondaBox.getSelectedItem());
+                logica.iniciarTorneo(r, j1Field.getText(), j2Field.getText(), fijo);
+            } else {
+                logica.iniciarTorneo(1, "Jugador 1", "Jugador 2", true);
+            }
+        }
+    }
+
     private void btn_reset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reset1ActionPerformed
+        logica.iniciarTorneo(1, "Jugador 1", "Jugador 2", true);
         this.resetea();
     }//GEN-LAST:event_btn_reset1ActionPerformed
 
-    private void btn_equisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_equisActionPerformed
-        turno="equis";
-        this.btn_equis.setEnabled(false);
-        this.btn_circulo.setEnabled(false);
+    private void asignarTurno(int turnoElegido) {
+        comprobarInicioTorneo();
         
-        this.btn_uno.setEnabled(true);
-        this.btn_dos.setEnabled(true);
-        this.btn_tres.setEnabled(true);
-        this.btn_cuatro.setEnabled(true);
-        this.btn_cinco.setEnabled(true);
-        this.btn_seis.setEnabled(true);
-        this.btn_siete.setEnabled(true);
-        this.btn_ocho.setEnabled(true);
-        this.btn_nueve.setEnabled(true);
+        if (!logica.isModoFijo()) {
+            String[] opciones = {logica.getNombreJ1(), logica.getNombreJ2()};
+            String strTurno = (turnoElegido == JuegoLogica.EQUIS) ? "X" : "O";
+            int seleccion = JOptionPane.showOptionDialog(this, 
+                "¿Quién jugará con la '" + strTurno + "' en esta ronda?", 
+                "Elegir Equipo", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, opciones, opciones[0]);
+                
+            if (seleccion == 0) {
+                logica.setJugadorXActual((turnoElegido == JuegoLogica.EQUIS) ? 1 : 2);
+            } else {
+                logica.setJugadorXActual((turnoElegido == JuegoLogica.EQUIS) ? 2 : 1);
+            }
+        } else {
+            // En modo fijo, J1 siempre es X, J2 siempre es O
+            logica.setJugadorXActual(1);
+        }
+        
+        logica.setTurno(turnoElegido);
+        iniciarBotones();
+    }
+
+    private void btn_equisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_equisActionPerformed
+        asignarTurno(JuegoLogica.EQUIS);
     }//GEN-LAST:event_btn_equisActionPerformed
 
     private void btn_circuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_circuloActionPerformed
-        turno="circulo";
-        this.btn_circulo.setEnabled(false);
-        this.btn_equis.setEnabled(false);
-        
-        this.btn_uno.setEnabled(true);
-        this.btn_dos.setEnabled(true);
-        this.btn_tres.setEnabled(true);
-        this.btn_cuatro.setEnabled(true);
-        this.btn_cinco.setEnabled(true);
-        this.btn_seis.setEnabled(true);
-        this.btn_siete.setEnabled(true);
-        this.btn_ocho.setEnabled(true);
-        this.btn_nueve.setEnabled(true);
+        asignarTurno(JuegoLogica.CIRCULO);
     }//GEN-LAST:event_btn_circuloActionPerformed
+
+    private void iniciarBotones() {
+        this.btn_equis.setEnabled(false);
+        this.btn_circulo.setEnabled(false);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                botonesMatriz[i][j].setEnabled(true);
+            }
+        }
+        actualizarTitulo();
+    }
 
     /**
      * @param args the command line arguments
